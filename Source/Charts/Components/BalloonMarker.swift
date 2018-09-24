@@ -183,7 +183,11 @@ open class BalloonMarker: MarkerImage
     
     open override func refreshContent(entry: ChartDataEntry, highlight: Highlight)
     {
-        setLabel(String(entry.y))
+        if(entry.isKind(of: BubbleChartDataEntry.self)){
+           setLabel("TEST")
+        }else{
+           setLabel(String(format: "%.4f", entry.y))
+        }
     }
     
     @objc open func setLabel(_ newLabel: String)
