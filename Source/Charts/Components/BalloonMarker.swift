@@ -21,6 +21,7 @@ open class BalloonMarker: MarkerImage
     @objc open var textColor: UIColor
     @objc open var insets: UIEdgeInsets
     @objc open var minimumSize = CGSize()
+    @objc open var displayContent: MarkerDisplayContent?
     
     fileprivate var label: String?
     fileprivate var _labelSize: CGSize = CGSize()
@@ -33,6 +34,7 @@ open class BalloonMarker: MarkerImage
         self.font = font
         self.textColor = textColor
         self.insets = insets
+        self.displayContent = nil
         
         _paragraphStyle = NSParagraphStyle.default.mutableCopy() as? NSMutableParagraphStyle
         _paragraphStyle?.alignment = .center
@@ -184,9 +186,14 @@ open class BalloonMarker: MarkerImage
     open override func refreshContent(entry: ChartDataEntry, highlight: Highlight)
     {
         if(entry.isKind(of: BubbleChartDataEntry.self)){
-           setLabel("TEST")
+            
+            let data: MarkerDisplayContent = entry.data as! MarkerDisplayContent
+            self.displayContent = data
+            setLabel("\(data.title!)\n \(data.source!)")
+            
         }else{
-           setLabel(String(format: "%.4f", entry.y))
+            self.displayContent = nil
+            setLabel(String(format: "%.4f", entry.y))
         }
     }
     
